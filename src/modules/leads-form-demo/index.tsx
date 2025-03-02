@@ -11,7 +11,7 @@ const root = createRoot(rootElement!);
 root.render(
   <BrowserRouter>
     <Routes>
-      <Route path="/" element={<LeadsForm />} />
+      <Route path="/solicitar-informacion" element={<LeadsForm />} />
     </Routes>
   </BrowserRouter>
 );
