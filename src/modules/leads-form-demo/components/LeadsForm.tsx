@@ -1,6 +1,11 @@
 import React, { useState } from 'react';
+import { BACKEND_API_URL } from '../../../shared/utils/urls';
+import { message } from 'antd';
+import { useNavigate } from 'react-router-dom';
 
 export default function LeadsForm() {
+  const navigate = useNavigate();
+
   const [formData, setFormData] = useState({
     name: '',
     surnames: '',
@@ -19,12 +24,48 @@ export default function LeadsForm() {
     });
   };
 
+  const validateForm = () => {
+    const { name, surnames, reason, phone, email, acceptTerms } = formData;
+
+    if (!name.trim()) {
+      message.error('Por favor, ingresa tu nombre.');
+      return false;
+    }
+    if (!surnames.trim()) {
+      message.error('Por favor, ingresa tus apellidos.');
+      return false;
+    }
+    if (!reason.trim()) {
+      message.error('Por favor, ingresa el motivo de la consulta.');
+      return false;
+    }
+    if (!phone.trim()) {
+      message.error('Por favor, ingresa tu número de teléfono.');
+      return false;
+    }
+    if (!email.trim()) {
+      message.error('Por favor, ingresa tu correo electrónico.');
+      return false;
+    }
+    if (!acceptTerms) {
+      message.error('Por favor, acepta los términos y condiciones.');
+      return false;
+    }
+
+    return true;
+  };
+
   const handleSubmit = async (e: any) => {
     e.preventDefault();
+
+    if (!validateForm()) {
+      return; // Stop submission if validation fails
+    }
+
     setLoading(true);
 
     try {
-      const response = await fetch('https://example.com/api/leads', {
+      const response = await fetch(`${BACKEND_API_URL}/leads/form`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -38,10 +79,10 @@ export default function LeadsForm() {
 
       const result = await response.json();
       console.log('Success:', result);
-      alert('Form submitted successfully!');
+      message.success('Gracias! En breve nos pondremos en contacto contigo');
     } catch (error) {
       console.error('Error:', error);
-      alert('There was an error submitting the form.');
+      message.error('No se ha podido enviar el formulario.');
     } finally {
       setLoading(false);
     }
@@ -122,7 +163,12 @@ export default function LeadsForm() {
               className="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded"
               required
             />
-            <span className="ml-2 text-sm text-gray-600">Acepto los términos y condiciones</span>
+            <span className="ml-2 text-sm text-gray-600">
+              Acepto los{' '}
+              <span className="text-blue-500 cursor-pointer" onClick={() => navigate('/terminos-y-condiciones')}>
+                términos y condiciones
+              </span>
+            </span>
           </label>
         </div>
 
