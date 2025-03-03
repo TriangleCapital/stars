@@ -6,7 +6,8 @@
     "build:dev": "webpack --mode development",
     "build:start": "cd dist && PORT=5300 npx serve",
     "build": "webpack --mode production",
-    "start": "webpack serve --open --mode development"
+    "start": "webpack serve --open --mode development",
+    "start:leads_form_demo": "webpack serve --open --mode development --env leads_form_demo"
   },
   "dependencies": {
     "@ant-design/icons": "^5.4.0",

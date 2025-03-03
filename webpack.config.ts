@@ -5,7 +5,9 @@ import CopyWebpackPlugin from 'copy-webpack-plugin';
 import Dotenv from 'dotenv-webpack';
 
 module.exports = (env: any, argv: any) => {
-  let entry = './src/modules/leads-form-demo/index.tsx';
+  let entry = './src/modules/manychat-lobby/index.tsx';
+
+  if (env.leads_form_demo) entry = './src/modules/leads-form-demo/index.tsx';
 
   return {
     mode: (process.env.NODE_ENV as 'production' | 'development' | undefined) ?? 'development',
