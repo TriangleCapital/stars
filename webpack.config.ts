@@ -6,8 +6,12 @@ import Dotenv from 'dotenv-webpack';
 
 module.exports = (env: any, argv: any) => {
   let entry = './src/modules/manychat-lobby/index.tsx';
+  let publicPath = 'https://leads.novafinance.es/';
 
-  if (env.leads_form_demo) entry = './src/modules/leads-form-demo/index.tsx';
+  if (env.leads_form_demo) {
+    entry = './src/modules/leads-form-demo/index.tsx';
+    publicPath = 'https://novafinance.es/';
+  }
 
   return {
     mode: (process.env.NODE_ENV as 'production' | 'development' | undefined) ?? 'development',
@@ -17,12 +21,7 @@ module.exports = (env: any, argv: any) => {
     output: {
       filename: 'bundle.js',
       path: path.resolve(__dirname, 'dist'),
-      publicPath:
-        process.env.NODE_ENV === 'development'
-          ? 'http://localhost:5100/'
-          : env.copy_order
-          ? 'https://copy-order.onrender.com'
-          : 'https://upload-customer-files.onrender.com/',
+      publicPath: process.env.NODE_ENV === 'development' ? 'http://localhost:5100/' : publicPath,
     },
 
     module: {
