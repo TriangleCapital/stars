@@ -1,4 +1,4 @@
-const isTest = true;
+const isTest = false;
 
 const prodApiUrl = 'https://api.novafinance.es';
 const localApiUrl = 'http://localhost:3100';
