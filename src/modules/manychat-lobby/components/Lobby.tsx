@@ -8,7 +8,7 @@ const { Dragger } = Upload;
 export default function Lobby() {
   const [file, setFile] = useState<File | null>(null);
   const [loading, setLoading] = useState(false);
-  const [leadsProcessed, setLeadsProcessed] = useState<boolean>(true);
+  const [leadsProcessed, setLeadsProcessed] = useState<boolean>(false);
   const [numberLeadsProcessed, setNumberLeadsProcessed] = useState<number>(0);
 
   const handleUpload = (info: any) => {
@@ -51,8 +51,33 @@ export default function Lobby() {
     message.success('Archivo eliminado.');
   };
 
+  const handleRedirectToLeads = () => {
+    window.open('https://web.totalum.app/table/leads', '_blank');
+  };
+
+  const handleRedirectToConversations = () => {
+    window.open('https://app.manychat.com/fb2531532/chat', '_blank');
+  };
+
   return (
     <div className="p-6 py-20 space-y-6 min-h-screen flex flex-col items-center justify-start bg-gradient-to-br from-white to-blue-50 gap-10">
+      <div className="absolute top-4 left-1/2 transform -translate-x-1/2 flex gap-4 z-10">
+        <Button
+          type="primary"
+          onClick={handleRedirectToLeads}
+          className="px-6 py-2 bg-blue-500 hover:bg-blue-600 border-none rounded-full shadow-md text-lg transition-all duration-300"
+        >
+          Ir al Panel de leads
+        </Button>
+        <Button
+          type="primary"
+          onClick={handleRedirectToConversations}
+          className="px-6 py-2 bg-blue-500 hover:bg-blue-600 border-none rounded-full shadow-md text-lg transition-all duration-300"
+        >
+          Ver conversaciones de leads
+        </Button>
+      </div>
+
       {!leadsProcessed && (
         <section className="w-full max-w-lg p-6 rounded-3xl border border-gray-200 bg-white shadow-xl shadow-blue-200 transition-all duration-300 hover:shadow-blue-300">
           <h2 className="text-2xl font-extrabold text-center mb-6 text-blue-600">Optimización Leads Idealista</h2>
