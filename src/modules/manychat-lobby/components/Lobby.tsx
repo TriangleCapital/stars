@@ -1,7 +1,9 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Upload, message, Button, Spin } from 'antd';
 import { CheckCircleOutlined, InboxOutlined, LoadingOutlined } from '@ant-design/icons';
 import { uploadFileToBackend } from '../handlers';
+import axios from 'axios';
+import { BACKEND_API_URL } from '../../../shared/utils/urls';
 
 const { Dragger } = Upload;
 
@@ -58,6 +60,12 @@ export default function Lobby() {
   const handleRedirectToConversations = () => {
     window.open('https://app.manychat.com/fb2531532/chat', '_blank');
   };
+
+  useEffect(() => {
+    (async () => {
+      await axios.get(BACKEND_API_URL);
+    })();
+  }, []);
 
   return (
     <div className="p-6 py-20 space-y-6 min-h-screen flex flex-col items-center justify-start bg-gradient-to-br from-white to-blue-50 gap-10">
