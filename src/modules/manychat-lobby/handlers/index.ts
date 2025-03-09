@@ -11,5 +11,7 @@ export async function uploadFileToBackend(file: File) {
     },
   });
 
-  return response.data.leadsProcessed;
+  const { leadsProcessed, leadsOmitted } = response.data;
+
+  return { leadsProcessed, leadsOmitted };
 }

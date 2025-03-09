@@ -12,6 +12,8 @@ export default function Lobby() {
   const [loading, setLoading] = useState(false);
   const [leadsProcessed, setLeadsProcessed] = useState<boolean>(false);
   const [numberLeadsProcessed, setNumberLeadsProcessed] = useState<number>(0);
+  const [numberLeadsOmitted, setNumberLeadsOmitted] = useState<number>(0);
+  const [loadingService, setLoadingService] = useState<boolean>(false);
 
   const handleUpload = (info: any) => {
     const selectedFile = info.file;
@@ -36,9 +38,10 @@ export default function Lobby() {
 
     setLoading(true);
     try {
-      const numberLeads = await uploadFileToBackend(file);
+      const { leadsProcessed, leadsOmitted } = await uploadFileToBackend(file);
       setLeadsProcessed(true);
-      setNumberLeadsProcessed(numberLeads);
+      setNumberLeadsProcessed(leadsProcessed);
+      setNumberLeadsOmitted(leadsOmitted);
       message.success('¡Archivo enviado con éxito!');
       setFile(null);
     } catch (error) {
@@ -63,12 +66,27 @@ export default function Lobby() {
 
   useEffect(() => {
     (async () => {
-      await axios.get(BACKEND_API_URL);
+      try {
+        setLoadingService(true);
+        await axios.get(BACKEND_API_URL);
+        message.success('Servicio disponible.');
+      } catch (error) {
+        message.error('El servicio no está disponible en este momento. Recarga la página.');
+      } finally {
+        setLoadingService(false);
+      }
     })();
   }, []);
 
   return (
     <div className="p-6 py-20 space-y-6 min-h-screen flex flex-col items-center justify-start bg-gradient-to-br from-white to-blue-50 gap-10">
+      {loadingService && (
+        <div className="fixed inset-0 bg-black bg-opacity-30 backdrop-blur-sm flex items-center justify-start z-50 flex-col gap-10 pt-[35%]">
+          <span className="text-white">Cargando el servicio. Puede tardar hasta 1 minuto</span>
+          <Spin indicator={<LoadingOutlined style={{ fontSize: 48, color: '#fff' }} spin />} />
+        </div>
+      )}
+
       <div className="absolute top-4 left-1/2 transform -translate-x-1/2 flex gap-4 z-10">
         <Button
           type="primary"
@@ -77,13 +95,13 @@ export default function Lobby() {
         >
           Ir al Panel de leads
         </Button>
-        <Button
+        {/* <Button
           type="primary"
           onClick={handleRedirectToConversations}
           className="px-6 py-2 bg-blue-500 hover:bg-blue-600 border-none rounded-full shadow-md text-lg transition-all duration-300"
         >
           Ver conversaciones de leads
-        </Button>
+        </Button> */}
       </div>
 
       {!leadsProcessed && (
@@ -145,6 +163,15 @@ export default function Lobby() {
               <span className="text-green-600 font-semibold">{numberLeadsProcessed}</span> conversaciones empezadas
             </p>
           </div>
+
+          {numberLeadsOmitted > 0 && (
+            <div className="flex items-center">
+              <p className="text-lg font-medium text-gray-800">
+                <span className="text-orange-600 font-semibold">{numberLeadsOmitted}</span> leads omitidos por repetición o
+                datos erróneos
+              </p>
+            </div>
+          )}
 
           {numberLeadsProcessed > 0 && (
             <div className="mt-6 flex flex-col gap-4">
