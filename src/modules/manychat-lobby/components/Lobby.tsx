@@ -106,7 +106,7 @@ export default function Lobby() {
 
       {!leadsProcessed && (
         <section className="w-full max-w-lg p-6 rounded-3xl border border-gray-200 bg-white shadow-xl shadow-blue-200 transition-all duration-300 hover:shadow-blue-300">
-          <h2 className="text-2xl font-extrabold text-center mb-6 text-blue-600">Optimización Leads Idealista</h2>
+          <h2 className="text-2xl font-extrabold text-center mb-6 text-black">Optimización Leads Idealista</h2>
 
           <Dragger
             name="file"
