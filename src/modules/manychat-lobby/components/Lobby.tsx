@@ -95,13 +95,13 @@ export default function Lobby() {
         >
           Ir al Panel de leads
         </Button>
-        {/* <Button
+        <Button
           type="primary"
           onClick={handleRedirectToConversations}
           className="px-6 py-2 bg-blue-500 hover:bg-blue-600 border-none rounded-full shadow-md text-lg transition-all duration-300"
         >
           Ver conversaciones de leads
-        </Button> */}
+        </Button>
       </div>
 
       {!leadsProcessed && (
