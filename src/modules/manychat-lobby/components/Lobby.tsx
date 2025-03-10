@@ -186,6 +186,15 @@ export default function Lobby() {
               </p>
             </div>
           )}
+
+          <div className="mt-6 flex justify-center">
+            <button
+              onClick={() => window.location.reload()}
+              className="px-4 py-1 bg-gray-400 hover:bg-gray-500 text-white font-semibold rounded-lg transition-all duration-300"
+            >
+              Volver
+            </button>
+          </div>
         </section>
       )}
     </div>
