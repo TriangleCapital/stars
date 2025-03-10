@@ -81,7 +81,7 @@ export default function Lobby() {
   return (
     <div className="p-6 py-20 space-y-6 min-h-screen flex flex-col items-center justify-start bg-gradient-to-br from-white to-blue-50 gap-10">
       {loadingService && (
-        <div className="fixed inset-0 bg-black bg-opacity-30 backdrop-blur-sm flex items-center justify-start z-50 flex-col gap-10 pt-[35%]">
+        <div className="fixed inset-0 bg-black bg-opacity-30 backdrop-blur-sm flex items-center justify-start z-50 flex-col gap-10 pt-[350px]">
           <span className="text-white">Cargando el servicio. Puede tardar hasta 1 minuto</span>
           <Spin indicator={<LoadingOutlined style={{ fontSize: 48, color: '#fff' }} spin />} />
         </div>
