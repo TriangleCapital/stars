@@ -14,7 +14,7 @@ const AuthPortal = ({ children }: { children: React.ReactNode }) => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (password === 'cotilla') {
+    if (password === 'bot-cotilla') {
       setIsAuthenticated(true);
       setError('');
       localStorage.setItem('isAuthenticated', 'true');
