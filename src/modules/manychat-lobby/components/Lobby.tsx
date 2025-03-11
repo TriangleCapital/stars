@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Upload, message, Button, Spin } from 'antd';
+import { Upload, message, Button, Spin, Input } from 'antd';
 import { CheckCircleOutlined, InboxOutlined, LoadingOutlined } from '@ant-design/icons';
 import { uploadFileToBackend } from '../handlers';
 import axios from 'axios';
@@ -14,6 +14,7 @@ export default function Lobby() {
   const [numberLeadsProcessed, setNumberLeadsProcessed] = useState<number>(0);
   const [numberLeadsOmitted, setNumberLeadsOmitted] = useState<number>(0);
   const [loadingService, setLoadingService] = useState<boolean>(false);
+  const [realtyLink, setRealtyLink] = useState<string>('');
 
   const handleUpload = (info: any) => {
     const selectedFile = info.file;
@@ -34,16 +35,24 @@ export default function Lobby() {
     if (!file) {
       message.error('No se ha seleccionado ningún archivo.');
       return;
+    } else if (!realtyLink) {
+      message.error('Por favor, introduce el enlace de la propiedad.');
+      return;
     }
 
     setLoading(true);
     try {
-      const { leadsProcessed, leadsOmitted } = await uploadFileToBackend(file);
+      const formData = new FormData();
+      formData.append('file', file);
+      formData.append('realtyLink', realtyLink);
+
+      const { leadsProcessed, leadsOmitted } = await uploadFileToBackend(formData);
       setLeadsProcessed(true);
       setNumberLeadsProcessed(leadsProcessed);
       setNumberLeadsOmitted(leadsOmitted);
       message.success('¡Archivo enviado con éxito!');
       setFile(null);
+      setRealtyLink('');
     } catch (error) {
       message.error('No se pudo enviar el archivo.');
     } finally {
@@ -105,24 +114,37 @@ export default function Lobby() {
       </div>
 
       {!leadsProcessed && (
-        <section className="w-full max-w-lg p-6 rounded-3xl border border-gray-200 bg-white shadow-xl shadow-blue-200 transition-all duration-300 hover:shadow-blue-300">
-          <h2 className="text-2xl font-extrabold text-center mb-6 text-black">Optimización Leads Idealista</h2>
+        <section className="w-full max-w-lg p-6 rounded-3xl border border-gray-200 bg-white shadow-xl shadow-blue-200 transition-all duration-300 hover:shadow-blue-300 flex flex-col gap-14">
+          <h2 className="text-2xl font-extrabold text-center text-black">Optimización Leads Idealista</h2>
 
-          <Dragger
-            name="file"
-            multiple={false}
-            accept=".xlsx, .xls"
-            onChange={handleUpload}
-            beforeUpload={() => false}
-            showUploadList={false}
-            className="bg-blue-50/20 text-blue-600 transition-all duration-300 hover:border-blue-400 hover:bg-blue-100/50 rounded-xl"
-          >
-            <p className="ant-upload-drag-icon text-blue-400">
-              <InboxOutlined className="text-4xl" />
-            </p>
-            <p className="ant-upload-text font-medium">Haz clic o arrastra un archivo de Excel para subir</p>
-            <p className="ant-upload-hint text-sm text-gray-500">Soporta archivos .xlsx y .xls</p>
-          </Dragger>
+          <div className="">
+            <label className="block text-sm font-medium text-gray-700 text-center mb-1">Enlace de la propiedad</label>
+            <Input
+              placeholder="Introduce el enlace de la propiedad"
+              value={realtyLink}
+              onChange={(e) => setRealtyLink(e.target.value)}
+              className="px-4 py-2"
+            />
+          </div>
+
+          <div>
+            <label className="block text-sm font-medium text-gray-700 text-center mb-1">Excel de Idealista</label>
+            <Dragger
+              name="file"
+              multiple={false}
+              accept=".xlsx, .xls"
+              onChange={handleUpload}
+              beforeUpload={() => false}
+              showUploadList={false}
+              className="bg-blue-50/20 text-blue-600 transition-all duration-300 hover:border-blue-400 hover:bg-blue-100/50 rounded-xl"
+            >
+              <p className="ant-upload-drag-icon text-blue-400">
+                <InboxOutlined className="text-4xl" />
+              </p>
+              <p className="ant-upload-text font-medium">Haz clic o arrastra un archivo de Excel para subir</p>
+              <p className="ant-upload-hint text-sm text-gray-500">Soporta archivos .xlsx y .xls</p>
+            </Dragger>
+          </div>
 
           {file && (
             <div className="mt-6 text-center">
