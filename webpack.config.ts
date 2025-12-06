@@ -6,11 +6,14 @@ import Dotenv from 'dotenv-webpack';
 
 module.exports = (env: any, argv: any) => {
   let entry = './src/modules/manychat-lobby/index.tsx';
-  let publicPath = 'https://leads.novafinance.es/';
+  let publicPath = 'https://leads.trianglecapital.es/';
 
   if (env.leads_form_demo) {
     entry = './src/modules/leads-form-demo/index.tsx';
     publicPath = 'https://novafinance.es/';
+  } else if (env.solvia_drive_excel) {
+    entry = './src/modules/solvia-drive-excel/index.tsx';
+    publicPath = 'https://solvia.trianglecapital.es/';
   }
 
   return {
